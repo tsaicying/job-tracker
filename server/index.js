@@ -2,14 +2,19 @@ const express = require('express');
 const cors = require('cors');
 
 require('dotenv').config();
+
+const jobsRouter = require('./routes/jobs')
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/jobs', jobsRouter);
+
 app.get('/', (req, res) => {
-    res.json({ message: 'Hello from the server!' });
+    res.json({ message: 'Job Tracker is running!' });
 });
 
 app.listen(PORT, () => {
