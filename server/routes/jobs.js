@@ -39,8 +39,8 @@ router.post('/', (req, res) => {
 
 
 router.delete('/:id', (req, res) => {
-    const jobs = readJobs;
-    const filtered = jobs.filtered(job => job.id != Number(req.params.id));
+    const jobs = readJobs();
+    const filtered = jobs.filter(job => job.id != Number(req.params.id));
     writeJobs(filtered);
     res.json({ message: 'Job deleted'});
 })
