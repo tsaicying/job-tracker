@@ -1,12 +1,20 @@
-import { useState } from 'react'
-import './App.css'
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom"
+import JobList from "./pages/JobList"
+import AddJob from "./pages/AddJob"
 
 function App() {
   return (
-    <div>
-      <h1>Job Tracker</h1>
-    </div>
+    <BrowserRouter>
+      <nav>
+        <Link to="/">Job application record</Link>
+        {' | '}
+        <Link to="/add">Add new record</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<JobList />}></Route>
+        <Route path="/add" element={<AddJob />}></Route>
+      </Routes>
+    </BrowserRouter>
   )
-}
-
+};
 export default App
