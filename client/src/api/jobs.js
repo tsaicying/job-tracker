@@ -12,6 +12,11 @@ export const createJob = async (jobData) => {
     return res.data
 }
 
+export const updateJob = async(id, jobData) => {
+    const res = await axios.put(`${BASE_URL}/${id}`, jobData)
+    return res.data
+}
+
 export const deleteJob = async(id) => {
     const res = await axios.delete(`${BASE_URL}/${id}`);
     return res.data

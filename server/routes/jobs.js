@@ -37,6 +37,19 @@ router.post('/', (req, res) => {
     res.status(201).json(newJob);
 })
 
+router.put('/:id', (req, res) => {
+    const jobs = readJobs();
+    const index = jobs.findIndex(job => String(job.id) === String(req.params.id))
+
+    if (index === -1) {
+        return res.status(404).json({ message: 'Job not found'});
+    }
+
+    jobs[index] = { ...jobs[index], ...req.body};
+    writeJobs(jobs);
+    res.json(jobs[index]);
+
+})
 
 router.delete('/:id', (req, res) => {
     const jobs = readJobs();
