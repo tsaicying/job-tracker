@@ -20,7 +20,6 @@ function AddJob(){
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log('送出資料：', formData)
         await createJob(formData)
         navigate('/')
     }
