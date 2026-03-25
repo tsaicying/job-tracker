@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const {isAuthenticated} = require('../middleware/auth')
 
 const dataPath = path.join(__dirname, '../data/jobs.json');
 
@@ -14,12 +15,12 @@ function writeJobs(jobs) {
     fs.writeFileSync(dataPath, JSON.stringify(jobs, null, 2));
 }
 
-router.get('/', (req, res) => {
+router.get('/', isAuthenticated, (req, res) => {
     const jobs = readJobs();
     res.json(jobs);
 })
 
-router.post('/', (req, res) => {
+router.post('/', isAuthenticated, (req, res) => {
     const jobs = readJobs();
     const newJob = {
         id: Date.now(),
@@ -37,7 +38,7 @@ router.post('/', (req, res) => {
     res.status(201).json(newJob);
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', isAuthenticated, (req, res) => {
     const jobs = readJobs();
     const index = jobs.findIndex(job => String(job.id) === String(req.params.id))
 
@@ -51,7 +52,7 @@ router.put('/:id', (req, res) => {
 
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', isAuthenticated, (req, res) => {
     const jobs = readJobs();
     const filtered = jobs.filter(job => job.id != Number(req.params.id));
     writeJobs(filtered);
