@@ -7,6 +7,7 @@ import { getMe, logout, loginWithGoogle} from './api/auth';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(()=> {
     fetchUser()
@@ -14,28 +15,39 @@ function App() {
 
   const fetchUser = async () => {
     const data = await getMe();
-    setUser(data)
+    setUser(data);
+    setLoading(false)
   }
+
+  if (loading) return <p>Loading....</p>
   return (
     <BrowserRouter>
       <nav>
         <Link to="/">Job application record</Link>
         {' | '}
-        <Link to="/add">Add new record</Link>
-        {' | '}
         {user ? (
           <>
+            <Link to="/add">Add new record</Link>
+            {' | '}
             <span> {user.name} </span>
             {' '}
             <button onClick={logout}>logout</button>
           </>
         ): (<button onClick={loginWithGoogle}>Use google to login</button>)}
       </nav>
-      <Routes>
-        <Route path="/" element={<JobList />}></Route>
-        <Route path="/add" element={<AddJob />}></Route>
-        <Route path="/edit/:id" element={<EditJob />}></Route>
-      </Routes>
+      {!user ? (
+        <div>
+          <h2>Please log in.</h2>
+          <button onClick={loginWithGoogle}>Use google to login</button>
+        </div>
+        ): (
+        <Routes>
+          <Route path="/" element={<JobList />}></Route>
+          <Route path="/add" element={<AddJob />}></Route>
+          <Route path="/edit/:id" element={<EditJob />}></Route>
+        </Routes>
+        )}
+
     </BrowserRouter>
   )
 };
