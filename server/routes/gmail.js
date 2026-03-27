@@ -4,7 +4,6 @@ const { google } = require('googleapis');
 const { isAuthenticated } = require('../middleware/auth');
 
 router.get('/emails', isAuthenticated, async (req, res) => {
-    console.log('accessToken:', req.user.accessToken)
     try{
         const auth = new google.auth.OAuth2()
         auth.setCredentials( {access_token: req.user.access_token });
