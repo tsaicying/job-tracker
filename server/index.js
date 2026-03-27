@@ -7,6 +7,7 @@ require('dotenv').config();
 const passport = require('./config/passport');
 const jobsRouter = require('./routes/jobs');
 const authRouter = require('./routes/auth');
+const gmailRouter = require('./routes/gmail');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,7 +26,8 @@ app.use(passport.initialize());
 app.use(passport.session())
 
 app.use('/api/jobs', jobsRouter);
-app.use('/auth',  authRouter)
+app.use('/auth',  authRouter);
+app.use('/api/gmail', gmailRouter);
 
 app.get('/', (req, res) => {
     res.json({ message: 'Job Tracker is running!' });
