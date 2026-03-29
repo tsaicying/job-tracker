@@ -23,6 +23,7 @@ router.post('/analyze', isAuthenticated, async (req, res) => {
                 some job seaking related email. Please analyze every email and
                 reply the outcome with JSON format. Please analyze every email
                 1. company: company name,
+                2. position: job position name (if unknown, return "")
                 2. status: status (applied/ interviewing/ offered/ rejected, select one)
                 3. summary: brief summary 
                 only JSON in response, no other word:

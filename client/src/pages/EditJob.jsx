@@ -1,10 +1,13 @@
 import { useState, useEffect} from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { getJobs, updateJob } from '../api/jobs';
 
 function EditJob(){
     const {id} = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+    const suggestion = location.state?.suggestion;
+
     const [formData, setFormData] = useState({
         company: '',
         position: '',
@@ -34,9 +37,25 @@ function EditJob(){
         navigate('/')
     };
 
+    const handleApplySuggestion = () => {
+        setFormData(prev => ({
+            ...prev, status: suggestion.status, notes: suggestion.summery
+        }))
+    }
+
     return (
         <div>
             <h1>Edit job application record</h1>
+            { suggestion && (
+                <div>
+                    <h3>Suggestion from Gmail Scan</h3>
+                    <p>Status: {suggestion.status}</p>
+                    <p>Notes: {suggestion.summary}</p>
+                    <button type="button" onClick={handleApplySuggestion}>Apply Suggestion</button>
+                </div>
+            )
+
+            }
             <div>
                 <label>Company: </label>
                 <input name="company" value={formData.company} onChange={handleChange} />

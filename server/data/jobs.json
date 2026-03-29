@@ -20,5 +20,27 @@
     "url": "",
     "notes": "do it",
     "createdAt": "2026-03-25T20:36:04.746Z"
+  },
+  {
+    "id": 1774813649507,
+    "company": "Amazon",
+    "position": "",
+    "status": "applied",
+    "appliedDate": "2026-03-29",
+    "location": "",
+    "url": "",
+    "notes": "Amazon application requires completing an online assessment as the next step in the application process.",
+    "createdAt": "2026-03-29T19:47:29.507Z"
+  },
+  {
+    "id": 1774813716543,
+    "company": "1234",
+    "position": "",
+    "status": "applied",
+    "appliedDate": "2026-03-29",
+    "location": "",
+    "url": "",
+    "notes": "",
+    "createdAt": "2026-03-29T19:48:36.543Z"
   }
 ]
