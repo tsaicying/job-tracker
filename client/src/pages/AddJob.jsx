@@ -22,9 +22,15 @@ function AddJob(){
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        await createJob(formData)
-        navigate('/')
+        
+        try {
+            e.preventDefault()
+            await createJob(formData)
+            navigate('/')
+        } catch (err){
+            console.error('新增失敗：', err)
+        }
+
     }
 
     return (

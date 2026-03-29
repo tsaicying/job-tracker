@@ -5,9 +5,20 @@ const { isAuthenticated } = require('../middleware/auth');
 
 router.get('/emails', isAuthenticated, async (req, res) => {
     try{
-        const auth = new google.auth.OAuth2()
-        auth.setCredentials( {access_token: req.user.access_token });
-
+        const auth = new google.auth.OAuth2(
+            process.env.GOOGLE_CLIENT_ID,
+            process.env.GOOGLE_CLIENT_SECRET
+        )
+        auth.setCredentials( {
+            access_token: req.user.accessToken,
+            refresh_token: req.user.refreshToken
+         });
+        
+        auth.on('tokens', (tokens) => {
+            if (tokens.access_token) {
+                req.user.accessToken = tokens.access_token
+            }
+        })
         const gmail = google.gmail( { version: 'v1', auth });
 
         const response = await gmail.users.messages.list({
@@ -41,7 +52,8 @@ router.get('/emails', isAuthenticated, async (req, res) => {
             })
         
         )
-
+        console.log('accessToken:', req.user.accessToken)
+        console.log('refreshToken:', req.user.refreshToken)
         res.json(emails)
     } catch (err) {
         console.error(err);

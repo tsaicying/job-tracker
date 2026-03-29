@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 
 require('dotenv').config();
 
@@ -12,6 +13,19 @@ const claudeRouter = require('./routes/claude');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(session({
+  store: new FileStore({
+    path: './sessions',
+    retries: 1
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 24 * 60 * 60 * 1000 
+  }
+}))
 
 app.use(cors({
     origin: process.env.CLIENT_URL,
