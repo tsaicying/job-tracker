@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getJobs, deleteJob, createJob, updateJob } from '../api/jobs';
+import { getJobs, deleteJob } from '../api/jobs';
 import { useNavigate } from 'react-router-dom';
 import { getEmails } from '../api/gmail';
 import { analyzeEmails } from '../api/claude';
