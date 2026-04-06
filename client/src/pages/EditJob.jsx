@@ -45,52 +45,59 @@ function EditJob(){
 
     return (
         <div>
-            <h1>Edit job application record</h1>
+            <h1 className='font-bold text-xl text-gray-800 mb-6'>Edit job application record</h1>
             { suggestion && (
-                <div>
-                    <h3>Suggestion from Gmail Scan</h3>
-                    <p>Status: {suggestion.status}</p>
-                    <p>Notes: {suggestion.summary}</p>
-                    <button type="button" onClick={handleApplySuggestion}>Apply Suggestion</button>
+                <div className='bg-indigo-50 border border-indigo-200 rounded-xl p-4 mb-6'>
+                    <p className='font-medium text-indigo-700 mb-2'>Suggestion from Gmail Scan</p>
+                    <p className='text-indigo-600'>Status: {suggestion.status}</p>
+                    <p className='text-indigo-600'>Notes: {suggestion.summary}</p>
+                    <button className='mt-3 bg-indigo-600 text-white px-4 py-1.5 rounded-lg hover:bg-indigo-700' type="button" onClick={handleApplySuggestion}>Apply Suggestion</button>
                 </div>
             )
 
             }
-            <div>
-                <label>Company: </label>
-                <input name="company" value={formData.company} onChange={handleChange} />
+            <div className='bg-white border border-gray-200 rounded-xl p-4 mn-6 flex flex-col gap-5'>
+                <div className='flex flex-col gap-1'>
+                    <label className='font-medium text-gray-700'>Company: </label>
+                    <input className='border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300' name="company" value={formData.company} onChange={handleChange} />
+                </div>
+                <div className='flex flex-col gap-1'>
+                    <label className='font-medium text-gray-700'>Position: </label>
+                    <input className='border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300' name="position" value={formData.position} onChange={handleChange} />
+                </div>
+                <div className='flex flex-col gap-1'>
+                    <label className='font-medium text-gray-700'>Status: </label>
+                    <select className='border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300' name="status" value={formData.status} onChange={handleChange}>
+                        <option value="applied">applied</option>
+                        <option value="interviewing">interviewing</option>
+                        <option value="offered">offered</option>
+                        <option value="rejected">rejected</option>
+                    </select>
+                </div>
+                <div className='flex flex-col gap-1'>
+                    <label className='font-medium text-gray-700'>Applied Date:</label>
+                    <input className='border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300' type='date' name="appliedDate" value={formData.appliedDate} onChange={handleChange} />
+                </div>
+                <div className='flex flex-col gap-1'>
+                    <label className='font-medium text-gray-700'>Location</label>
+                    <input className='border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300' name="location" value={formData.location} onChange={handleChange} />
+                </div>
+                <div className='flex flex-col gap-1'>
+                    <label className='font-medium text-gray-700'>Url: </label>
+                    <input className='border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300' type='url' name="url" value={formData.url} onChange={handleChange} />
+                </div>
+                <div className='flex flex-col gap-1'>
+                    <label className='font-medium text-gray-700'>Notes: </label>
+                    <textarea className='border border-gray-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300' name="notes" value={formData.notes} onChange={handleChange} />
+                </div>
+                <div className='flex gap-4'>
+                    <button className='bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition' type="button" onClick={handleSubmit}>Save</button>
+                    <button className='bg-gray-100 text-gray-600 px-4 py-2 rounded-lg font-medium text-blue-700 hover:bg-gray-200 transition' type="button" onClick={() => navigate("/")}>Cancel</button>
+                </div>
+
+                
             </div>
-            <div>
-                <label>Position: </label>
-                <input name="position" value={formData.position} onChange={handleChange} />
-            </div>
-            <div>
-                <label>Status: </label>
-                <select name="status" value={formData.status} onChange={handleChange}>
-                    <option value="applied">applied</option>
-                    <option value="interviewing">interviewing</option>
-                    <option value="offered">offered</option>
-                    <option value="rejected">rejected</option>
-                </select>
-            </div>
-            <div>
-                <label>Applied Date:</label>
-                <input name="appliedDate" value={formData.appliedDate} onChange={handleChange} />
-            </div>
-            <div>
-                <label>Location</label>
-                <input name="location" value={formData.location} onChange={handleChange} />
-            </div>
-            <div>
-                <label>Url: </label>
-                <input name="url" value={formData.url} onChange={handleChange} />
-            </div>
-            <div>
-                <label>Notes: </label>
-                <input name="notes" value={formData.notes} onChange={handleChange} />
-            </div>
-            <button type="button" onClick={handleSubmit}>Save</button>
-            <button type="button" onClick={() => navigate("/")}>Cancel</button>
+
         </div>
     );
 

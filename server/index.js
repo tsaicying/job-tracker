@@ -14,6 +14,13 @@ const claudeRouter = require('./routes/claude');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+
+
+app.use(cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true
+}));
+app.use(express.json());
 app.use(session({
   store: new FileStore({
     path: './sessions',
@@ -25,17 +32,6 @@ app.use(session({
   cookie: {
     maxAge: 24 * 60 * 60 * 1000 
   }
-}))
-
-app.use(cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true
-}));
-app.use(express.json());
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false
 }))
 app.use(passport.initialize());
 app.use(passport.session())
