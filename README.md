@@ -2,7 +2,7 @@
 
 A full-stack job application tracking tool with Gmail integration and AI-powered email analysis.
 
-## Featyres
+## Features
 
 - **Google OAuth 2.0** - Secure Login with Google account
 - **Job Application CRUD** - Add, Edit, and delete job applications
