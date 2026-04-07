@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5000/api/gmail';
+const BASE_URL = import.meta.env.VITE_API_URL 
+  ? `${import.meta.env.VITE_API_URL}/auth`
+  : 'http://localhost:5000/gmail'
 
 export const getEmails = async () => {
     const res = await axios.get(`${BASE_URL}/emails`);
