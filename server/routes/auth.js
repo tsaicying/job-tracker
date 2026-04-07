@@ -11,8 +11,6 @@ router.get('/google', passport.authenticate('google', {
 router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: 'auth/failed'}),
     (req, res) => {
-        console.log('登入成功，req.user:', req.user);
-        console.log('session:', req.session);
         res.redirect(process.env.CLIENT_URL)
     }
 )

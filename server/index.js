@@ -39,6 +39,7 @@ app.use(session({
 }))
 app.use(passport.initialize());
 app.use(passport.session())
+app.set("trust proxy", 1);
 
 app.use('/api/jobs', jobsRouter);
 app.use('/auth',  authRouter);
