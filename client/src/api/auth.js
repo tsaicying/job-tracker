@@ -4,7 +4,7 @@ const BASE_URL = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/auth`
   : 'http://localhost:5000/auth'
 
-axios.defaults.withCredentials = true;
+
 
 export const getMe = async () => {
     try {
