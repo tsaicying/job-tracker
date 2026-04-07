@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const pool = require('./index');
 
 async function setup() {
@@ -14,7 +16,16 @@ async function setup() {
                 notes TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )`)
+        await pool.query(`
+                CREATE TABLE IF NOT EXISTS session (
+                sid VARCHAR NOT NULL COLLATE "default",
+                sess JSON NOT NULL,
+                expire TIMESTAMP(6) NOT NULL,
+                CONSTRAINT session_pkey PRIMARY KEY (sid)
+            )
+            `)
         console.log('data table established successfully');
+        console.log('✅ Session 資料表建立成功')
         process.exit(0)
     } catch(err){
         console.log('Data table establishment failure', err)

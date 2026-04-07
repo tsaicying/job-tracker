@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
-const FileStore = require('session-file-store')(session);
+const pgSession = require('connect-pg-simple')(session)
+const pool = require('./db/index')
 
 require('dotenv').config();
 
@@ -22,10 +23,11 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(session({
-  store: new FileStore({
-    path: './sessions',
-    retries: 1
-  }),
+  store: new pgSession({
+    pool: pool,
+    tableName: 'session'
+  })
+  ,
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,

@@ -26,7 +26,7 @@ router.get('/me', (req, res) => {
     if (req.user) {
         res.json(req.user)
     } else {
-        res.status(401).json({message: 'no yet log in'})
+        res.status(401).json({message: 'not yet log in'})
     }
 })
 
