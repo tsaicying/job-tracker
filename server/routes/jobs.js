@@ -1,62 +1,65 @@
 const express = require('express');
 const router = express.Router();
-const fs = require('fs');
-const path = require('path');
+const pool = require('../db/index')
 const {isAuthenticated} = require('../middleware/auth')
 
-const dataPath = path.join(__dirname, '../data/jobs.json');
-
-function readJobs(){
-    const data = fs.readFileSync(dataPath, 'utf-8');
-    return JSON.parse(data)
-}
-
-function writeJobs(jobs) {
-    fs.writeFileSync(dataPath, JSON.stringify(jobs, null, 2));
-}
-
-router.get('/', isAuthenticated, (req, res) => {
-    const jobs = readJobs();
-    res.json(jobs);
-})
-
-router.post('/', isAuthenticated, (req, res) => {
-    const jobs = readJobs();
-    const newJob = {
-        id: Date.now(),
-        company: req.body.company,
-        position: req.body.position,
-        status: req.body.status || 'applied',
-        appliedDate: req.body.appliedDate,
-        location: req.body.location || '',
-        url: req.body.url || '',
-        notes: req.body.notes || '',
-        createdAt: new Date().toISOString()
+router.get('/', isAuthenticated, async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM jobs ORDER BY created_at DESC');
+        res.json(result.rows);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({message: 'Server Error1'});
     }
-    jobs.push(newJob);
-    writeJobs(jobs);
-    res.status(201).json(newJob);
 })
 
-router.put('/:id', isAuthenticated, (req, res) => {
-    const jobs = readJobs();
-    const index = jobs.findIndex(job => String(job.id) === String(req.params.id))
-
-    if (index === -1) {
-        return res.status(404).json({ message: 'Job not found'});
+router.post('/', isAuthenticated, async(req, res) => {
+    try {
+        const { company, position, status, appliedDate, location, url, notes } = req.body;
+        const result = await pool.query(
+            `INSERT INTO jobs (company, position, status, applied_date, location, url, notes)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
+            RETURNING *`,
+            [company, position, status || 'applied', appliedDate, location, url, notes]
+        )
+        res.status(201).json(result.rows[0])
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' })
     }
-
-    jobs[index] = { ...jobs[index], ...req.body};
-    writeJobs(jobs);
-    res.json(jobs[index]);
-
 })
 
-router.delete('/:id', isAuthenticated, (req, res) => {
-    const jobs = readJobs();
-    const filtered = jobs.filter(job => job.id != Number(req.params.id));
-    writeJobs(filtered);
-    res.json({ message: 'Job deleted'});
+router.put('/:id', isAuthenticated, async(req, res) => {
+    try {
+        const { company, position, status, appliedDate, location, url, notes } = req.body;
+        const result = await pool.query(
+            `
+            UPDATE jobs
+            SET company=$1, position=$2, status=$3, applied_date=$4, location=$5, url=$6, notes=$7
+            WHERE id=$8
+            RETURNING *
+            `, [company, position, status, appliedDate, location, url, notes, req.params.id]
+        )
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Job not found' })}
+        res.json(result.rows[0])
+
+    } catch (err){
+        console.error(err);
+        res.status(500).json({message: 'Server Error'})
+    }
+}) 
+
+
+
+router.delete('/:id', isAuthenticated, async(req, res) => {
+        try {
+        await pool.query('DELETE FROM jobs WHERE id=$1', [req.params.id]);
+        res.json({ message: 'Job deleted' })
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Server Error' })
+    }
 })
 
 module.exports = router
